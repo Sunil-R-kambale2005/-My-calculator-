@@ -8,80 +8,52 @@
   <div class="calculator">
     <input type="text" id="display" readonly>
     <div class="btn-container">
-      <button class="btn" onclick="
-      currentvalue = '';
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: orange;">c</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '1';
-      document.querySelector('#display').value=currentvalue;
-      ">1</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '2';
-      document.querySelector('#display').value=currentvalue;
-      ">2</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '3';
-      document.querySelector('#display').value=currentvalue;
-      ">3</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '+';
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: aqua;">+</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '4';
-      document.querySelector('#display').value=currentvalue;
-      ">4</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '5';
-      document.querySelector('#display').value=currentvalue;
-      ">5</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '6';
-      document.querySelector('#display').value=currentvalue;
-      ">6</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '-';
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: aqua;">-</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '7';
-      document.querySelector('#display').value=currentvalue;
-      ">7</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '8';
-      document.querySelector('#display').value=currentvalue;
-      ">8</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '9';
-      document.querySelector('#display').value=currentvalue;
-      ">9</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '*';
-      document.querySelector('#display').value=currentvalue;
-      "style="background-color:aqua">*</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '/';
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: aqua;">/</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '0';
-      document.querySelector('#display').value=currentvalue;
-      ">0</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '.';
-      document.querySelector('#display').value=currentvalue;
-      ">.</button>
-      <button class="btn" onclick="
-      currentvalue = eval(currentvalue);
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: aqua;width: 220px;">=</button>
+      <!--
+        Performance Optimization:
+        1. Centralized event handling functions (clearDisplay, appendVal, calculate).
+        2. Caching the '#display' element reference to prevent expensive DOM queries on every click.
+        3. Drastically reduced inline HTML payload size from repetitive DOM query strings.
+      -->
+      <button class="btn" onclick="clearDisplay()" style="background-color: orange;">c</button>
+      <button class="btn" onclick="appendVal('1')">1</button>
+      <button class="btn" onclick="appendVal('2')">2</button>
+      <button class="btn" onclick="appendVal('3')">3</button>
+      <button class="btn" onclick="appendVal('+')" style="background-color: aqua;">+</button>
+      <button class="btn" onclick="appendVal('4')">4</button>
+      <button class="btn" onclick="appendVal('5')">5</button>
+      <button class="btn" onclick="appendVal('6')">6</button>
+      <button class="btn" onclick="appendVal('-')" style="background-color: aqua;">-</button>
+      <button class="btn" onclick="appendVal('7')">7</button>
+      <button class="btn" onclick="appendVal('8')">8</button>
+      <button class="btn" onclick="appendVal('9')">9</button>
+      <button class="btn" onclick="appendVal('*')" style="background-color:aqua">*</button>
+      <button class="btn" onclick="appendVal('/')" style="background-color: aqua;">/</button>
+      <button class="btn" onclick="appendVal('0')">0</button>
+      <button class="btn" onclick="appendVal('.')">.</button>
+      <button class="btn" onclick="calculate()" style="background-color: aqua;width: 220px;">=</button>
     </div><br><br>
-    
+
   </div>
   <script>
     let currentvalue = '';
-    document.querySelector("#display").value=currentvalue;
+    // Cache display element to avoid repeated querySelector lookup overhead
+    const displayElement = document.querySelector("#display");
+    displayElement.value = currentvalue;
+
+    function clearDisplay() {
+      currentvalue = '';
+      displayElement.value = currentvalue;
+    }
+
+    function appendVal(val) {
+      currentvalue = currentvalue + val;
+      displayElement.value = currentvalue;
+    }
+
+    function calculate() {
+      currentvalue = eval(currentvalue);
+      displayElement.value = currentvalue;
+    }
   </script>
 </body>
 </html>
