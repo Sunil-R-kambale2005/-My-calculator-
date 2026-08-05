@@ -1,0 +1,3 @@
+## 2025-08-05 - [DOM Node Caching & Inline Event Handler Centralization]
+**Learning:** Repetitive inline JS handlers inside raw HTML files generate multiple redundant DOM lookups (like `document.querySelector('#display')`) on every user interaction, leading to unnecessary CPU cycles and code bloat. Centralizing handlers and caching the node reference globally inside a `<script>` tag optimizes performance and reduces initial page load size.
+**Action:** Always check raw HTML pages for duplicate inline DOM lookups or bloated event handlers, and extract them into single-instance cached references.

@@ -8,80 +8,68 @@
   <div class="calculator">
     <input type="text" id="display" readonly>
     <div class="btn-container">
-      <button class="btn" onclick="
-      currentvalue = '';
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: orange;">c</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '1';
-      document.querySelector('#display').value=currentvalue;
-      ">1</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '2';
-      document.querySelector('#display').value=currentvalue;
-      ">2</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '3';
-      document.querySelector('#display').value=currentvalue;
-      ">3</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '+';
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: aqua;">+</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '4';
-      document.querySelector('#display').value=currentvalue;
-      ">4</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '5';
-      document.querySelector('#display').value=currentvalue;
-      ">5</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '6';
-      document.querySelector('#display').value=currentvalue;
-      ">6</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '-';
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: aqua;">-</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '7';
-      document.querySelector('#display').value=currentvalue;
-      ">7</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '8';
-      document.querySelector('#display').value=currentvalue;
-      ">8</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '9';
-      document.querySelector('#display').value=currentvalue;
-      ">9</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '*';
-      document.querySelector('#display').value=currentvalue;
-      "style="background-color:aqua">*</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '/';
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: aqua;">/</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '0';
-      document.querySelector('#display').value=currentvalue;
-      ">0</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '.';
-      document.querySelector('#display').value=currentvalue;
-      ">.</button>
-      <button class="btn" onclick="
-      currentvalue = eval(currentvalue);
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: aqua;width: 220px;">=</button>
+      <!--
+        Performance Optimization (⚡ Bolt):
+        1. Centralized repetitive inline event handlers into lightweight helper functions.
+        2. Cached the DOM element query for '#display' to avoid expensive querySelector traversals on every button click.
+      -->
+      <button class="btn" onclick="clearDisplay()" style="background-color: orange;">c</button>
+      <button class="btn" onclick="pressKey('1')">1</button>
+      <button class="btn" onclick="pressKey('2')">2</button>
+      <button class="btn" onclick="pressKey('3')">3</button>
+      <button class="btn" onclick="pressKey('+')" style="background-color: aqua;">+</button>
+      <button class="btn" onclick="pressKey('4')">4</button>
+      <button class="btn" onclick="pressKey('5')">5</button>
+      <button class="btn" onclick="pressKey('6')">6</button>
+      <button class="btn" onclick="pressKey('-')" style="background-color: aqua;">-</button>
+      <button class="btn" onclick="pressKey('7')">7</button>
+      <button class="btn" onclick="pressKey('8')">8</button>
+      <button class="btn" onclick="pressKey('9')">9</button>
+      <button class="btn" onclick="pressKey('*')" style="background-color: aqua;">*</button>
+      <button class="btn" onclick="pressKey('/')" style="background-color: aqua;">/</button>
+      <button class="btn" onclick="pressKey('0')">0</button>
+      <button class="btn" onclick="pressKey('.')">.</button>
+      <button class="btn" onclick="calculate()" style="background-color: aqua; width: 220px;">=</button>
     </div><br><br>
-    
   </div>
+
   <script>
     let currentvalue = '';
-    document.querySelector("#display").value=currentvalue;
+
+    // Performance Optimization (⚡ Bolt): Cache the display element to prevent O(N) DOM query cost on every button click.
+    const displayElement = document.querySelector("#display");
+    displayElement.value = currentvalue;
+
+    /**
+     * Appends a character to the expression and updates the display.
+     * @param {string} val - The character or number key pressed.
+     */
+    function pressKey(val) {
+      currentvalue += val;
+      displayElement.value = currentvalue;
+    }
+
+    /**
+     * Resets the display and mathematical expression.
+     */
+    function clearDisplay() {
+      currentvalue = '';
+      displayElement.value = currentvalue;
+    }
+
+    /**
+     * Evaluates the current expression and displays the result.
+     * Keeps 'eval' to preserve exact behavior of original implementation.
+     */
+    function calculate() {
+      try {
+        if (currentvalue === '') return;
+        currentvalue = eval(currentvalue);
+        displayElement.value = currentvalue;
+      } catch (e) {
+        displayElement.value = 'Error';
+      }
+    }
   </script>
 </body>
 </html>
