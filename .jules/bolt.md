@@ -1,0 +1,3 @@
+## 2025-08-08 - [Optimized DOM Querying and Event Handling for Calculator]
+**Learning:** In static vanilla JS apps, registering multiple inline `onclick` event handlers and query selecting the same DOM elements (`document.querySelector('#display')`) on every click introduces significant layout thrashing, DOM lookup overhead, and unnecessary memory footprint. Utilizing event delegation on a single parent element and caching DOM elements on page load completely bypasses repetitive lookups and extra handler registry.
+**Action:** Always check static/vanilla JS setups first for element caching opportunities and event delegation. It reduces garbage collection pressure, saves memory, and guarantees faster interaction responses.
