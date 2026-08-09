@@ -1,0 +1,3 @@
+## 2025-08-09 - Event Delegation & Cached DOM Reference in Static Web Apps
+**Learning:** In simple, static single-page applications with heavy interactive controls (like calculators or dashboards), inline `onclick` attributes cause high DOM parsing overhead, bloat bundle size, and create multiple redundant event listeners. Combining DOM caching (`document.getElementById` which is faster than `querySelector`) and event delegation on a common parent container significantly improves memory layout and reduces parse times.
+**Action:** Always favor event delegation and cached DOM queries over inline/multiple element handlers when optimizing interaction-heavy user interfaces.
