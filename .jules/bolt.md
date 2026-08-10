@@ -1,0 +1,3 @@
+## 2026-08-10 - Event Delegation and DOM Caching in Vanilla HTML Calculator
+**Learning:** Legacy inline event listeners (e.g., `onclick="..."`) with repeated `document.querySelector` DOM lookups are extremely inefficient because they parse/execute inline strings on every click and query the entire DOM tree repeatedly. Caching the elements with `document.getElementById` and using a single container event listener via Event Delegation avoids garbage collection overhead and optimizes memory footprint.
+**Action:** Always replace inline event handlers with event delegation and cache static DOM references to prevent repeated selector lookups.
