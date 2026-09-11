@@ -8,80 +8,49 @@
   <div class="calculator">
     <input type="text" id="display" readonly>
     <div class="btn-container">
-      <button class="btn" onclick="
-      currentvalue = '';
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: orange;">c</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '1';
-      document.querySelector('#display').value=currentvalue;
-      ">1</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '2';
-      document.querySelector('#display').value=currentvalue;
-      ">2</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '3';
-      document.querySelector('#display').value=currentvalue;
-      ">3</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '+';
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: aqua;">+</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '4';
-      document.querySelector('#display').value=currentvalue;
-      ">4</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '5';
-      document.querySelector('#display').value=currentvalue;
-      ">5</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '6';
-      document.querySelector('#display').value=currentvalue;
-      ">6</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '-';
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: aqua;">-</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '7';
-      document.querySelector('#display').value=currentvalue;
-      ">7</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '8';
-      document.querySelector('#display').value=currentvalue;
-      ">8</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '9';
-      document.querySelector('#display').value=currentvalue;
-      ">9</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '*';
-      document.querySelector('#display').value=currentvalue;
-      "style="background-color:aqua">*</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '/';
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: aqua;">/</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '0';
-      document.querySelector('#display').value=currentvalue;
-      ">0</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '.';
-      document.querySelector('#display').value=currentvalue;
-      ">.</button>
-      <button class="btn" onclick="
-      currentvalue = eval(currentvalue);
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: aqua;width: 220px;">=</button>
+      <button class="btn" style="background-color: orange;">c</button>
+      <button class="btn">1</button>
+      <button class="btn">2</button>
+      <button class="btn">3</button>
+      <button class="btn" style="background-color: aqua;">+</button>
+      <button class="btn">4</button>
+      <button class="btn">5</button>
+      <button class="btn">6</button>
+      <button class="btn" style="background-color: aqua;">-</button>
+      <button class="btn">7</button>
+      <button class="btn">8</button>
+      <button class="btn">9</button>
+      <button class="btn" style="background-color: aqua;">*</button>
+      <button class="btn" style="background-color: aqua;">/</button>
+      <button class="btn">0</button>
+      <button class="btn">.</button>
+      <button class="btn" style="background-color: aqua;width: 220px;">=</button>
     </div><br><br>
-    
+
   </div>
   <script>
     let currentvalue = '';
-    document.querySelector("#display").value=currentvalue;
+
+    // Performance Optimization: Cache DOM reference to avoid repeated document.querySelector lookups on every click
+    const displayElement = document.querySelector("#display");
+    displayElement.value = currentvalue;
+
+    // Performance Optimization: Event delegation on the container element instead of 17 individual inline onclick handlers
+    const btnContainer = document.querySelector('.btn-container');
+    btnContainer.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!target.classList.contains('btn')) return;
+
+      const action = target.textContent.trim();
+      if (action === 'c') {
+        currentvalue = '';
+      } else if (action === '=') {
+        currentvalue = eval(currentvalue);
+      } else {
+        currentvalue = currentvalue + action;
+      }
+      displayElement.value = currentvalue;
+    });
   </script>
 </body>
 </html>
