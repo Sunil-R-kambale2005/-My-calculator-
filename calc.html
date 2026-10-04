@@ -31,6 +31,8 @@
     // Performance Optimization:
     // 1. Cache DOM references to avoid expensive DOM queries on every click event.
     // 2. Use event delegation on .btn-container instead of multiple inline onclick handlers.
+    // 3. Early guard on calculate to avoid executing eval() on empty input strings.
+    // 4. Batch DOM mutations by writing to displayEl.value only when value actually changes.
     const displayEl = document.querySelector('#display');
     const containerEl = document.querySelector('.btn-container');
     let currentvalue = '';
@@ -47,16 +49,20 @@
       if (action === 'clear') {
         currentvalue = '';
       } else if (action === 'calculate') {
-        try {
-          currentvalue = String(eval(currentvalue));
-        } catch (e) {
-          currentvalue = '';
+        if (currentvalue) {
+          try {
+            currentvalue = String(eval(currentvalue));
+          } catch (e) {
+            currentvalue = '';
+          }
         }
       } else if (val !== undefined) {
         currentvalue += val;
       }
 
-      displayEl.value = currentvalue;
+      if (displayEl.value !== currentvalue) {
+        displayEl.value = currentvalue;
+      }
     });
   </script>
 </body>
