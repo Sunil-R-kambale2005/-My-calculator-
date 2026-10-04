@@ -8,80 +8,56 @@
   <div class="calculator">
     <input type="text" id="display" readonly>
     <div class="btn-container">
-      <button class="btn" onclick="
-      currentvalue = '';
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: orange;">c</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '1';
-      document.querySelector('#display').value=currentvalue;
-      ">1</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '2';
-      document.querySelector('#display').value=currentvalue;
-      ">2</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '3';
-      document.querySelector('#display').value=currentvalue;
-      ">3</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '+';
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: aqua;">+</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '4';
-      document.querySelector('#display').value=currentvalue;
-      ">4</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '5';
-      document.querySelector('#display').value=currentvalue;
-      ">5</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '6';
-      document.querySelector('#display').value=currentvalue;
-      ">6</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '-';
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: aqua;">-</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '7';
-      document.querySelector('#display').value=currentvalue;
-      ">7</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '8';
-      document.querySelector('#display').value=currentvalue;
-      ">8</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '9';
-      document.querySelector('#display').value=currentvalue;
-      ">9</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '*';
-      document.querySelector('#display').value=currentvalue;
-      "style="background-color:aqua">*</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '/';
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: aqua;">/</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '0';
-      document.querySelector('#display').value=currentvalue;
-      ">0</button>
-      <button class="btn" onclick="
-      currentvalue = currentvalue + '.';
-      document.querySelector('#display').value=currentvalue;
-      ">.</button>
-      <button class="btn" onclick="
-      currentvalue = eval(currentvalue);
-      document.querySelector('#display').value=currentvalue;
-      " style="background-color: aqua;width: 220px;">=</button>
+      <button class="btn" data-action="clear" style="background-color: orange;">c</button>
+      <button class="btn" data-val="1">1</button>
+      <button class="btn" data-val="2">2</button>
+      <button class="btn" data-val="3">3</button>
+      <button class="btn" data-val="+" style="background-color: aqua;">+</button>
+      <button class="btn" data-val="4">4</button>
+      <button class="btn" data-val="5">5</button>
+      <button class="btn" data-val="6">6</button>
+      <button class="btn" data-val="-" style="background-color: aqua;">-</button>
+      <button class="btn" data-val="7">7</button>
+      <button class="btn" data-val="8">8</button>
+      <button class="btn" data-val="9">9</button>
+      <button class="btn" data-val="*" style="background-color: aqua;">*</button>
+      <button class="btn" data-val="/" style="background-color: aqua;">/</button>
+      <button class="btn" data-val="0">0</button>
+      <button class="btn" data-val=".">.</button>
+      <button class="btn" data-action="calculate" style="background-color: aqua;width: 220px;">=</button>
     </div><br><br>
-    
   </div>
   <script>
+    // Performance Optimization:
+    // 1. Cache DOM references to avoid expensive DOM queries on every click event.
+    // 2. Use event delegation on .btn-container instead of multiple inline onclick handlers.
+    const displayEl = document.querySelector('#display');
+    const containerEl = document.querySelector('.btn-container');
     let currentvalue = '';
-    document.querySelector("#display").value=currentvalue;
+
+    displayEl.value = currentvalue;
+
+    containerEl.addEventListener('click', (event) => {
+      const btn = event.target.closest('.btn');
+      if (!btn) return;
+
+      const action = btn.dataset.action;
+      const val = btn.dataset.val;
+
+      if (action === 'clear') {
+        currentvalue = '';
+      } else if (action === 'calculate') {
+        try {
+          currentvalue = String(eval(currentvalue));
+        } catch (e) {
+          currentvalue = '';
+        }
+      } else if (val !== undefined) {
+        currentvalue += val;
+      }
+
+      displayEl.value = currentvalue;
+    });
   </script>
 </body>
 </html>
