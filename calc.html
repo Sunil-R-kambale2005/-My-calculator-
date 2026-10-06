@@ -31,6 +31,8 @@
     // Performance Optimization:
     // 1. Cache DOM references to avoid expensive DOM queries on every click event.
     // 2. Use event delegation on .btn-container instead of multiple inline onclick handlers.
+    // 3. Use Function constructor over eval() for faster execution without lexical scope compilation overhead.
+    // 4. Guard against redundant DOM property writes to minimize rendering/paint work.
     const displayEl = document.querySelector('#display');
     const containerEl = document.querySelector('.btn-container');
     let currentvalue = '';
@@ -47,16 +49,23 @@
       if (action === 'clear') {
         currentvalue = '';
       } else if (action === 'calculate') {
-        try {
-          currentvalue = String(eval(currentvalue));
-        } catch (e) {
-          currentvalue = '';
+        if (currentvalue) {
+          try {
+            // Performance Optimization: Function constructor executes in global scope faster than eval()
+            const result = Function(`'use strict'; return (${currentvalue})`)();
+            currentvalue = (result !== undefined && !Number.isNaN(result)) ? String(result) : '';
+          } catch (e) {
+            currentvalue = '';
+          }
         }
       } else if (val !== undefined) {
         currentvalue += val;
       }
 
-      displayEl.value = currentvalue;
+      // Performance Optimization: Skip redundant DOM updates if display value has not changed
+      if (displayEl.value !== currentvalue) {
+        displayEl.value = currentvalue;
+      }
     });
   </script>
 </body>
