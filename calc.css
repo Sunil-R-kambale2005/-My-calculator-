@@ -37,5 +37,6 @@
 }
 .btn:hover{
   background-color: beige;
-  font-size: 25px;
+  /* Performance Optimization: Use transform: scale() instead of font-size to prevent triggering layout reflows on hover */
+  transform: scale(1.15);
 }
