@@ -47,10 +47,17 @@
       if (action === 'clear') {
         currentvalue = '';
       } else if (action === 'calculate') {
-        try {
-          currentvalue = String(eval(currentvalue));
-        } catch (e) {
+        // Performance Optimization:
+        // Skip calling eval() when input is empty or whitespace only.
+        // This avoids throwing and catching a SyntaxError exception, which is computationally expensive.
+        if (!currentvalue || !currentvalue.trim()) {
           currentvalue = '';
+        } else {
+          try {
+            currentvalue = String(eval(currentvalue));
+          } catch (e) {
+            currentvalue = '';
+          }
         }
       } else if (val !== undefined) {
         currentvalue += val;
