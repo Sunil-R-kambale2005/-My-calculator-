@@ -1,0 +1,3 @@
+## 2025-10-17 - Short-circuiting Redundant Evaluations & Guarding DOM Updates
+**Learning:** In event-driven vanilla JS components like calculators, clicking action buttons (e.g. `=` or `C`) repeatedly when empty or unchanged causes unnecessary evaluation and DOM writes. Adding early guards (`if (!currentvalue) return;`) and checking if `displayEl.value !== currentvalue` before setting DOM values avoids redundant computations and layout thrashing.
+**Action:** Always check state mutation and existing DOM property values before writing to the DOM, and short-circuit empty state evaluations in event listeners.

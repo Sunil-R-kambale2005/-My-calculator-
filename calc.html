@@ -31,6 +31,7 @@
     // Performance Optimization:
     // 1. Cache DOM references to avoid expensive DOM queries on every click event.
     // 2. Use event delegation on .btn-container instead of multiple inline onclick handlers.
+    // 3. Short-circuit calculate evaluation on empty input and avoid redundant DOM writes when value remains unchanged.
     const displayEl = document.querySelector('#display');
     const containerEl = document.querySelector('.btn-container');
     let currentvalue = '';
@@ -47,6 +48,7 @@
       if (action === 'clear') {
         currentvalue = '';
       } else if (action === 'calculate') {
+        if (!currentvalue) return; // Skip evaluation if currentvalue is empty
         try {
           currentvalue = String(eval(currentvalue));
         } catch (e) {
@@ -56,7 +58,10 @@
         currentvalue += val;
       }
 
-      displayEl.value = currentvalue;
+      // Avoid unnecessary DOM property updates if the display value has not changed
+      if (displayEl.value !== currentvalue) {
+        displayEl.value = currentvalue;
+      }
     });
   </script>
 </body>
