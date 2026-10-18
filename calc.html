@@ -28,10 +28,12 @@
     </div><br><br>
   </div>
   <script>
-    // Performance Optimization:
-    // 1. Cache DOM references to avoid expensive DOM queries on every click event.
+    // Performance Optimizations:
+    // 1. Cache DOM references using document.getElementById for direct fast lookup instead of querySelector CSS engine parsing.
     // 2. Use event delegation on .btn-container instead of multiple inline onclick handlers.
-    const displayEl = document.querySelector('#display');
+    // 3. Avoid redundant DOM updates by checking if displayEl.value has actually changed before writing to DOM.
+    // 4. Use scoped Function constructor instead of eval() to eliminate local scope chain overhead during expression evaluation.
+    const displayEl = document.getElementById('display');
     const containerEl = document.querySelector('.btn-container');
     let currentvalue = '';
 
@@ -48,7 +50,8 @@
         currentvalue = '';
       } else if (action === 'calculate') {
         try {
-          currentvalue = String(eval(currentvalue));
+          // Function constructor executes in global scope, avoiding scope chain lookup overhead of eval
+          currentvalue = String(Function('"use strict"; return (' + currentvalue + ')')());
         } catch (e) {
           currentvalue = '';
         }
@@ -56,7 +59,10 @@
         currentvalue += val;
       }
 
-      displayEl.value = currentvalue;
+      // Avoid unnecessary DOM mutations if value hasn't changed
+      if (displayEl.value !== currentvalue) {
+        displayEl.value = currentvalue;
+      }
     });
   </script>
 </body>
