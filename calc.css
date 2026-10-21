@@ -35,7 +35,8 @@
  font-family: 'Lucida Sans';
  font-weight: 600;
 }
+/* Performance Optimization: Use transform: scale() instead of font-size to trigger GPU composition rather than triggering layout reflows */
 .btn:hover{
   background-color: beige;
-  font-size: 25px;
+  transform: scale(1.15);
 }
