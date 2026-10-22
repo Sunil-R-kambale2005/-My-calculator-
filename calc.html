@@ -31,6 +31,7 @@
     // Performance Optimization:
     // 1. Cache DOM references to avoid expensive DOM queries on every click event.
     // 2. Use event delegation on .btn-container instead of multiple inline onclick handlers.
+    // 3. Avoid redundant DOM property writes if the input value has not changed.
     const displayEl = document.querySelector('#display');
     const containerEl = document.querySelector('.btn-container');
     let currentvalue = '';
@@ -56,7 +57,10 @@
         currentvalue += val;
       }
 
-      displayEl.value = currentvalue;
+      // Avoid unnecessary DOM writes when display value is unchanged
+      if (displayEl.value !== currentvalue) {
+        displayEl.value = currentvalue;
+      }
     });
   </script>
 </body>
