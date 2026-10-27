@@ -41,8 +41,10 @@
       const btn = event.target.closest('.btn');
       if (!btn) return;
 
-      const action = btn.dataset.action;
-      const val = btn.dataset.val;
+      // Performance Optimization: Use getAttribute('data-*') instead of dataset.*
+      // to avoid DOMStringMap proxy allocation overhead on every click.
+      const action = btn.getAttribute('data-action');
+      const val = btn.getAttribute('data-val');
 
       if (action === 'clear') {
         currentvalue = '';
@@ -52,7 +54,7 @@
         } catch (e) {
           currentvalue = '';
         }
-      } else if (val !== undefined) {
+      } else if (val !== null) {
         currentvalue += val;
       }
 
