@@ -31,6 +31,7 @@
     // Performance Optimization:
     // 1. Cache DOM references to avoid expensive DOM queries on every click event.
     // 2. Use event delegation on .btn-container instead of multiple inline onclick handlers.
+    // 3. Use getAttribute('data-*') instead of dataset.* to avoid DOMStringMap proxy allocation overhead during fast interactions.
     const displayEl = document.querySelector('#display');
     const containerEl = document.querySelector('.btn-container');
     let currentvalue = '';
@@ -41,8 +42,9 @@
       const btn = event.target.closest('.btn');
       if (!btn) return;
 
-      const action = btn.dataset.action;
-      const val = btn.dataset.val;
+      // Access attributes directly via getAttribute for faster performance compared to dataset proxy lookup
+      const action = btn.getAttribute('data-action');
+      const val = btn.getAttribute('data-val');
 
       if (action === 'clear') {
         currentvalue = '';
